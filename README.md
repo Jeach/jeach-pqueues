@@ -126,7 +126,7 @@ So the above outlines how I use the 'jeach-pqueues' library for a single `POST /
 
 I do realize that the use of the `PStack` instance may be somewhat '*different*' than many may have passed around data generated in other calls. I personally find it much more cleaner this way than to declare a bunch of variables which only get set later on. So far this works ... we'll see if it is required in subsequent version of the library.
 
-## Promise Queues
+## Queues
 
 **Note**: The following code has not yet been written yet. They are ideas I have been tinkering with to see how the following ideas can be designed and implemented.
 
@@ -182,3 +182,4 @@ Trying to illustratie it, execution would look something like this:
 
 Where the 'x' axis is time.
     
+But maybe using a `PQueue` is a bad idea? Maybe, we should create another type of object to clearly distinguish the differnce in execution. We'll see I guess.
