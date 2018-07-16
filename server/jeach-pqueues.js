@@ -1,4 +1,6 @@
 /*
+ * Jeach Promise Queues for Node JS
+ *
  * Copyright (C) 2018 by Christian Jean.
  * All rights reserved.
  *

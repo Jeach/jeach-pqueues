@@ -1,0 +1,26 @@
+{
+  "name": "jeach-pqueues",
+  "version": "0.1.0",
+  "description": "Jeach Promise Queues for Node.js",
+  "main": "jeach-pqueues.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jeach/jeach-pqueues.git"
+  },
+  "keywords": [
+    "jeach",
+    "jeach-promises",
+    "jeach-queues",
+    "jeach-pqueues",
+    "jeach-promise-queues"
+  ],
+  "author": "Christian Jean",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Jeach/jeach-pqueues/issues"
+  },
+  "homepage": "https://github.com/Jeach/jeach-pqueues#readme"
+}
