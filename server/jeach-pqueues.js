@@ -31,6 +31,8 @@
 */
 
 
+const VERSION = "0.1.1";
+
 const QUEUE_STATE = {
   PENDING: 0,
   STARTED: 1,
@@ -294,7 +296,7 @@ function createQueue() {
  * @since  0.1.0
  */
 function version() {
-  return "0.1.0";
+  return VERSION;
 }
 
 /**
