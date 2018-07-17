@@ -30,6 +30,7 @@
   leniant, a check wold ocurr and throw an exception if not found.
 */
 
+
 const QUEUE_STATE = {
   PENDING: 0,
   STARTED: 1,
