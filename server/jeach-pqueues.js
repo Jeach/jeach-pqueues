@@ -147,9 +147,9 @@ PQueue.prototype.execDeferred = function(queue, i) {
         // Example: package 'Tmp' --> 'tmp.file([params], function(err, path, fd, cleanupCallback)'
         if (arguments.length > 2) {
            log(3, " > Additional params: " + (arguments.length - 2));
-           for (var i=2; i<arguments.length; i++) {
-              log(3, " > Param " + (i + 1) + ": " + arguments[i]);
-              args.push(arguments[i]);
+           for (var x=2; x<arguments.length; x++) {
+              log(3, " > Param " + (x + 1) + ": " + arguments[x]);
+              args.push(arguments[x]);
            }   
         }
         
