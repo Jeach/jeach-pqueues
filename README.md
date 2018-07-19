@@ -1,10 +1,10 @@
-# Jeach PQueues (Promise Queues) [BETA]
+# Jeach PQueues (promise queues) [BETA]
 A simple alternative to other complex Node.js Promise libraries.
 
 ## Disclaimer and Rational
-I'm relatively new to the use of Promises. My initial introduction to them wern't so great. I found they were exceptionally confusing and more importantly, I found the literature was extremely lacking.
+I'm relatively new to the use of Promises. My initial introduction to them wern't so great. I found they were exceptionally confusing, the literature was extremely lacking, and more importantly there were no useful real-world examples.
 
-This work was a result of a few hours worth of effort put together so that I could continue moving forward with an initial project. I found it so simple and easy to use that I figured I should let others have access to it. It should be considered, at this time, unsafe for any production environment. It is essentially a few ideas that were thrown together in a few hours and may prove not to be feasible in the future.
+This work was a result of some experiments and a few ideas thrown together over the span of a few hours. With the soul purpose of being able to continue to move forward with an initial project. In the end, I found it so simple and easy to use that I figured I should let others have access to it. Although, it should be considered (at this time anyway), unsafe for any production environment.
 
 ### Point in Case
 
@@ -14,7 +14,7 @@ As mentioned above, I found the literature of various Promise libraries to be la
       Something.findById(id, callback);
     }
 
-We all know that a single asynchronous call is easy to make a process. What is complicated is when we have **many** real-world asynchronous calls to make.
+We all know that a single asynchronous call is easy to invoke. What is complicated is when we have **many** real-world asynchronous calls to make.
 
 But the authors of these Promise libraries, will have something as such to *demonstrate* the power of their libraries:
 
@@ -32,11 +32,13 @@ But the authors of these Promise libraries, will have something as such to *demo
 
 But they will **NEVER** show you real-world, complex examples of their libraries. Why? And if you navigate over to Stackoverflow for some help, you suddenly realize there are thousands of confused developers.
 
-In short, I was stunned by the lack of proper literature and support for all of these Promise libraries. And when I actually attempted to use them for myself (I chose to use 'Q') ... well that was total confusion and frustration. So out of frustration and absolutely needing to move on with my project, I came up with my jeach-pqueues (promise queues). Which I believe has a much more elegant API (no function chainging) and are much easier to use.
+In short, I was stunned by the lack of proper literature and support for all of these Promise libraries. And when I actually attempted to use them for myself (I chose to use 'Q') ... well that was total confusion and frustration. So out of immadiate need to move on with my project, I came up with my own implementation of promises which I now call **jeach-pqueues** (promise queues). I believe it has a much more elegant API (no function chaining) and is essentially much easier to understand and use.
+
+## Tutorial and Real-World Examples
+
+I've started to write a tutorial with real-world examples where I describe the step-by-step. If you navigate over to [jeach-pqueues-tutorial](https://glitch.com/edit/#!/jeach-pqueues-tutorial?path=README.md:1:0) over on Glitch.com, you will see the sample code and also be able to run the examples. You can even Remix the project for your own purpose.
 
 ## Getting Started
-
-**Note**: I realize I have yet to commit my code! But I want to write a short guide before I do so. I will be submitting my code in the next week or so.
 
 First, you need to install the `jeach-pqueues` module, by doing the following:
 
