@@ -81,7 +81,13 @@ The code signature for the **add** function is as follows:
 
     q.add(fn, [param1, ...], cb(stack, data));
 
-Where the `fn` is any standard **async** function you would like to call. For the purpose of this example, lets say you would like to call an async function called `writeToFile` which accepts three parameters; (1) a file descriptor (`fd`), (2) a buffer (`buf`), and (3) as expected of all async functions, a callback function (`cb`).
+Where:
+
+1. `fn` parameter is any standard **async** function you would like to call.
+2. `param1` (and any others) are the *optional* parameters which will be passed to the `fn` function when invoked. These are entirely dependent on the `fn` API and how you would like to use it. If no parameter is required, none are provided.
+3. `cb` is the **jeach-pqueue** callback which will be called if and only if the call to `fn` is successfull. If an error occurs or an exception is thrown, it will be caught by **jeach-pqueue** and the **caught** callbacks will be invoked instead.
+
+For the purpose of providing an example, lets say you would like to call an async function called `writeToFile` which accepts three parameters; (1) a file descriptor (`fd`), (2) a buffer (`buf`), and (3) as expected of all async functions, a callback function (`cb`).
 
 So normally (without promises), you would invoke `writeToFile` like this:
 
