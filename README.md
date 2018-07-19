@@ -40,15 +40,15 @@ I've started to write a tutorial with real-world examples where I describe the s
 
 ## Getting Started
 
-First, you need to install the `jeach-pqueues` module, by doing the following:
+First, you need to install the **jeach-pqueues** module, by doing the following:
 
 `npm --save install jeach-pqueues`
 
-Next, you can use `jeach-pqueues` in your code as follows:
+Next, you can start to use **jeach-pqueues** in your code as follows:
 
 `const pq = require('jeach-pqueues');`
 
-Here is an example of how the `jeach-pqueues` library would be used. I will go into further detail later on:
+Here is an example of how the **jeach-pqueues** library would be used. I will go into further detail later on:
 
     var q = pq.createQueue();
     
@@ -75,9 +75,11 @@ Here is an example of how the `jeach-pqueues` library would be used. I will go i
      
     q.exec();
 
-So as can be observed with the above code, instead of chaining with a `.then(...)` function, you simply need to **add** your deferred function to the queue. You can add as many as you like. Notice how the code seems to breath and seems to be much more cleaner than chaining?
+So as can be observed with the code above, instead of chaining with a `.then(...)` function, you simply need to `add(...)` your deferred function to the call queue. You can add as many as you like. 
 
-The code signature for the **add** function is as follows:
+Notice how the code seems to breath and seems to be much more cleaner than chaining?
+
+The code signature for the `add(...)` function is as follows:
 
     q.add(fn, [param1, ...], cb(stack, data));
 
@@ -98,7 +100,11 @@ So normally (without promises), you would invoke `writeToFile` like this:
        // This type of callback is pretty much standard in the async world
     });
 
-The way you would add `writeToFile` to the **jeach-pqueue** library is as follows:
+**Note**: Callbacks are heavily dependent on convention, the most common of which is the **“error-first”** callback passed as the **final** parameter (after the `fd` and `buf` parameters in our example above). By virtue of its name, an error-first callback is a function that takes an *error* object as its first parameter (or a falsey value if no error was encountered) and then any return values as subsequent parameters.
+
+If you would like to learn more on this, you should read [The Node.js Way - Understanding Error-First Callbacks](http://fredkschott.com/post/2014/03/understanding-error-first-callbacks-in-node-js/) which explains the history and convention behind this.
+
+The way you would **add** `writeToFile` to the **jeach-pqueue** library is as follows:
 
     q.add(writeToFile, fd, buf, function(stack, data) {
        // This gets called async, with 
@@ -108,7 +114,7 @@ The way you would add `writeToFile` to the **jeach-pqueue** library is as follow
        // called instead of passing through here.
     });
 
-There is a small advantage to my **jeach-pqueue** library. You are not limited to a *standard* callback of `error` and `data` (two parameters). If the async function you are calling only returns `data` (a single parameter), the library will automatically detect this and still provide the `stack` and `data` as shown above. Additionally, if the async function you are calling returns more parameters than the *standard* `error` and `data` (ie: `cb(err, data1, data2, data3, ...)`), your **jeach-pqueue** callback could look like the following:
+There is a small advantage to the **jeach-pqueue** library. You are not limited to a *standard* callback of `error` and `data` (two parameters). If the async function you are calling only returns `data` (a single parameter), the library will automatically detect this and still provide the `stack` and `data` as shown above. Additionally, if the async function you are calling returns more parameters than the *standard* `error` and `data` (ie: `cb(err, data1, data2, data3, ...)`), your **jeach-pqueue** callback could look like the following:
 
     q.add(writeToFile, fd, buf, function(stack, data1, data2, data3, data4) {
        // Use all the 'data' params, they will be available to you
