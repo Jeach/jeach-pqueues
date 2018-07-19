@@ -1,10 +1,10 @@
-# Jeach's Promise Queues (jeach-pqueues) [BETA]
+# Jeach PQueues (Promise Queues) [BETA]
 A simple alternative to other complex Node.js Promise libraries.
 
 ## Disclaimer and Rational
-I'm relatively new to the use of Promises. My initial introduction to them wern't so great. I found they exceptionally confusing and more importantly, I found the literature was extremely lacking.
+I'm relatively new to the use of Promises. My initial introduction to them wern't so great. I found they were exceptionally confusing and more importantly, I found the literature was extremely lacking.
 
-This work was a result of a few hours worth of effort put together so that I could continue moving forward with my project. It should be considered, at this time, unsafe for any production environment. It is essentially a few ideas that were thrown together in a few hours and may prove not to be feasible in the future.
+This work was a result of a few hours worth of effort put together so that I could continue moving forward with an initial project. I found it so simple and easy to use that I figured I should let others have access to it. It should be considered, at this time, unsafe for any production environment. It is essentially a few ideas that were thrown together in a few hours and may prove not to be feasible in the future.
 
 ### Point in Case
 
