@@ -36,7 +36,7 @@ In short, I was stunned by the lack of proper literature and support for all of 
 
 ## Tutorial and Real-World Examples
 
-I've started to write a tutorial with real-world examples where I describe the step-by-step. If you navigate over to [jeach-pqueues-tutorial](https://glitch.com/edit/#!/jeach-pqueues-tutorial?path=README.md:1:0) over on **Glitch.com**, you will see the sample code and also be able to run the examples. You can even Remix the project for your own purpose.
+I've started to write a tutorial with real-world examples where I describe the step-by-step (work in progress). If you navigate over to [jeach-pqueues-tutorial](https://glitch.com/edit/#!/jeach-pqueues-tutorial?path=README.md:1:0) over on **Glitch.com**, you will see the sample code and also be able to run the examples. You can even Remix the project for your own purpose.
 
 ## Getting Started
 
@@ -48,7 +48,7 @@ Next, you can use `jeach-pqueues` in your code as follows:
 
 `const pq = require('jeach-pqueues');`
 
-Here is an example of how the `jeach-pqueues` library would be used. I will go into further details later on:
+Here is an example of how the `jeach-pqueues` library would be used. I will go into further detail later on:
 
     var q = pq.createQueue();
     
@@ -75,17 +75,74 @@ Here is an example of how the `jeach-pqueues` library would be used. I will go i
      
     q.exec();
 
-So as can be observed with the code above, instead of chaining with a `.then(...)` function, you simply need to **add** your deferred function to the queue. You can add as many as you like. Notice how the code seems to breath and seems to be much more cleaner than chaining?
+So as can be observed with the above code, instead of chaining with a `.then(...)` function, you simply need to **add** your deferred function to the queue. You can add as many as you like. Notice how the code seems to breath and seems to be much more cleaner than chaining?
 
-You may have noticed the `stack` parameter of you callback function. The `stack` is essentially an instance of a `PStack` object which is associated with each promise queue.
+The code signature for the **add** function is as follows:
 
-It serves three purposes:
+    q.add(fn, [param1, ...], cb(stack, data));
 
-1. To add key/value pairs to it at any time.
-2. To get key/value pairs to it at any time.
-3. To reference a value by providing the 'key' in a deferred call (ie: `q.ref('param2')`). When your `doBar` function is actually called, the value for the *param2* key will be resolved and provided as parameter to your function.
+Where the `fn` is any standard **async** function you would like to call. For the purpose of this example, lets say you would like to call an async function called `writeToFile` which accepts three parameters; (1) a file descriptor (`fd`), (2) a buffer (`buf`), and (3) as expected of all async functions, a callback function (`cb`).
 
-You can use the stack to set any data to it and they will be available at any time during invokation of your function and/or within your callbacks. You can also read any previously set data from the stack. But more importantly, you can **reference** a future value. Here is a real-world example of how I use it in a `POST /account` API:
+So normally (without promises), you would invoke `writeToFile` like this:
+
+    writeToFile(fd, buf, function(err, data) {
+       // This gets called async, with
+       // 'err' set to a value on error, or
+       // 'data' containing a value on success
+       // This type of callback is pretty much standard in the async world
+    });
+
+The way you would add `writeToFile` to the **jeach-pqueue** library is as follows:
+
+    q.add(writeToFile, fd, buf, function(stack, data) {
+       // This gets called async, with 
+       // 'stack' for this promise queue
+       // 'data' containing a value on success
+       // If there are **any** errors, the **catch** handlers would be 
+       // called instead of passing through here.
+    });
+
+There is a small advantage to my **jeach-pqueue** library. You are not limited to a *standard* callback of `error` and `data` (two parameters). If the async function you are calling only returns `data` (a single parameter), the library will automatically detect this and still provide the `stack` and `data` as shown above. Additionally, if the async function you are calling returns more parameters than the *standard* `error` and `data` (ie: `cb(err, data1, data2, data3, ...)`), your **jeach-pqueue** callback could look like the following:
+
+    q.add(writeToFile, fd, buf, function(stack, data1, data2, data3, data4) {
+       // Use all the 'data' params, they will be available to you
+    });
+
+This is because the libaray automatically detects that there are additional parameters and they are provided on the call stack as well. If you look at the **Tmp** package on **NPM JS** page, you will see that the following function falls under this scenario:
+
+    tmp.file(config, function _tempFileCreated(err, path, fd) {
+       // Temp file callback with 4 parameters (3 after the 'err' param)
+    });
+
+With the **jeach-pqueue** library, there is no problem handling this, with this real-world example:
+
+    var config = { prefix: 'prefix-', postfix: '.tmp', detachDescriptor: true };
+    
+    q.add(tmp.file, config, function (stack, path, fd) {
+       stack.setValue('path', path);
+       stack.setValue('fd', fd);
+    });
+    
+    q.catch(function(stack, error) {
+       // log("Error: " + error.code);
+       // res.json({ success: false, error: error.code, logs: logs }); 
+    });
+
+In the example above, we use an additional (3rd param) which is `fd`, for which we successfully use in the callback. Should an error occur during the creation of the temporary file, the **catch** handler would be called instead.
+
+Let's move forward...
+
+By now you will have noticed the `stack` parameter in the callback function. The `stack` is essentially an instance of a `PStack` object which is associated with each instance of a promise queue.
+
+It essentially serves three purpose:
+
+1. To add key/value pairs to it (optional).
+2. To get key/value pairs from it (optional).
+3. To reference a value by providing the 'key' in a deferred call (ie: `q.ref('param2')`). When your `doBar` function is actually called, the value for the *param2* key will be resolved and provided as a parameter to your function.
+
+You can use the stack to set any data to it and they will be available at any time during invokation of your function and/or within your callbacks. You can also read any previously set data from the stack. But more importantly, you can **reference** a future value at any time (even if the actual value hasn't yet been added to the stack).
+
+Here is a real-world example of how I use it in a `POST /account` API:
 
     q.add(createAccount, username, function(stack, account) {
        console.log("We have successfully created an account entry in the database!");
