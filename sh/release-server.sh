@@ -7,18 +7,41 @@
 #-----------------------------------------------------------------------------
 #
 
-BASE="jeach-components"
+#npm version major|minor|patch
+#git tag v
+
+BASE="server"
+NAME="jeach-pqueues"
 REPO="releases"
 
+
+[ ! -d $BASE ] && echo "Could not find '$BASE' directory, aborting!" && exit 1
+
+cd $BASE &> /dev/null
+CUR_VER=v$(cat package.json | grep version | cut -d: -f2 | sed 's/[ ",]//g')
+
+case "$1" in
+  pat|Pat|PAT|patch|Patch|PATCH) TARGET="patch" ;;
+  min|Min|MIN|minor|Minor|MINOR) TARGET="minor" ;;
+  maj|Maj|MAJ|major|Major|MAJOR) TARGET="major" ;;
+  *) TARGET="patch" ;;
+esac
+
+NEX_VER=$(npm version $TARGET)
+
 echo
-echo "Releasing '$BASE-server' version $VERSION"
+echo "Releasing '$NAME'..."
+echo
+echo " >> Release type      : $TARGET"
+echo " >> Current version   : $CUR_VER"
+echo " >> Next version      : $NEX_VER"
 echo
 
-echo " >> Packaged: $BASE-client-$VERSION.min.js"
-cp client/$BASE-client.js $REPO/$BASE-client-$VERSION.js
+echo " >> Releasing package : $PACK"
+PACK=$(npm pack)
+mv $PACK ../$REPO
+git add -f ../releases/$PACK
+git add package.json
+git tag $NEX_VER
+git commit -m "Releaseing $NAME $NEX_VER"
 
-[ ! -x "bin/jsmin" ] && sh/jsmin.sh
-[ ! -x "bin/jsmin" ] && echo "Could not find 'JSMin' executable, aborting!" && exit 1
-
-echo " >> Packaged: $BASE-client-$VERSION.min.js"
-bin/jsmin < client/$BASE-client.js > $REPO/$BASE-client-$VERSION.min.js
