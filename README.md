@@ -36,7 +36,7 @@ In short, I was stunned by the lack of proper literature and support for all of 
 
 ## Tutorial and Real-World Examples
 
-I've started to write a tutorial with real-world examples where I describe the step-by-step. If you navigate over to [jeach-pqueues-tutorial](https://glitch.com/edit/#!/jeach-pqueues-tutorial?path=README.md:1:0) over on Glitch.com, you will see the sample code and also be able to run the examples. You can even Remix the project for your own purpose.
+I've started to write a tutorial with real-world examples where I describe the step-by-step. If you navigate over to [jeach-pqueues-tutorial](https://glitch.com/edit/#!/jeach-pqueues-tutorial?path=README.md:1:0) over on **Glitch.com**, you will see the sample code and also be able to run the examples. You can even Remix the project for your own purpose.
 
 ## Getting Started
 
