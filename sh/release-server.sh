@@ -43,5 +43,5 @@ mv $PACK ../$REPO
 git add -f ../releases/$PACK
 git add package.json
 git tag $NEX_VER
-git commit -m "Releaseing $NAME $NEX_VER"
+git commit -m "Releaseing $NAME $NEX_VER" &> /dev/null
 
