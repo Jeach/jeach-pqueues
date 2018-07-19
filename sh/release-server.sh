@@ -32,16 +32,25 @@ NEX_VER=$(npm version $TARGET)
 echo
 echo "Releasing '$NAME'..."
 echo
-echo " >> Release type      : $TARGET"
-echo " >> Current version   : $CUR_VER"
-echo " >> Next version      : $NEX_VER"
-echo
+echo " >> Release type     : $TARGET"
+echo " >> Current version  : $CUR_VER"
+echo " >> Next version     : $NEX_VER"
 
-echo " >> Releasing package : $PACK"
 PACK=$(npm pack)
-mv $PACK ../$REPO
+echo " >> Released package : $PACK"
+mv $PACK ../$REPO/$PACK
+
 git add -f ../releases/$PACK
 git add package.json
-git tag $NEX_VER
-git commit -m "Releaseing $NAME $NEX_VER" &> /dev/null
+git commit -m "Releasing $NAME $NEX_VER" &> /dev/null
 
+echo " >> Tagging"
+git tag $NEX_VER
+
+echo
+echo "Pushing to GitHub..."
+echo
+git push &> /dev/null
+git push --tags &> /dev/null
+SHA=$(git show $NEX_VER | head -n 1 | sed 's/commit //g') 
+echo " >> Commit $SHA"
