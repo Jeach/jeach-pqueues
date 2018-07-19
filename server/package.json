@@ -1,6 +1,6 @@
 {
   "name": "jeach-pqueues",
-  "version": "0.1.12",
+  "version": "0.1.13",
   "description": "Jeach Promise Queues for Node.js",
   "main": "jeach-pqueues.js",
   "scripts": {
