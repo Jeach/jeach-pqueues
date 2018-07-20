@@ -36,9 +36,9 @@ echo " >> Release type     : $TARGET"
 echo " >> Current version  : $CUR_VER"
 echo " >> Next version     : $NEX_VER"
 
-PACK=$(npm pack)
-echo " >> Released package : $PACK"
-mv $PACK ../$REPO/$PACK
+#PACK=$(npm pack)
+#echo " >> Released package : $PACK"
+#mv $PACK ../$REPO/$PACK
 
 git add -f ../releases/$PACK
 git add package.json
@@ -54,3 +54,10 @@ git push &> /dev/null
 git push --tags &> /dev/null
 SHA=$(git show $NEX_VER | head -n 1 | sed 's/commit //g') 
 echo " >> Commit $SHA"
+
+echo
+echo "Pushing to NPM JS..."
+echo
+npm publish
+
+echo " >> Successfully completed releas"
