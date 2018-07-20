@@ -41,7 +41,7 @@ echo " >> Next version     : $NEX_VER"
 #mv $PACK ../$REPO/$PACK
 
 git add -f ../releases/$PACK
-git add package.json
+git add *
 git commit -m "Releasing $NAME $NEX_VER" &> /dev/null
 
 echo " >> Tagging"
