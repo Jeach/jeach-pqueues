@@ -108,10 +108,9 @@ The way you would **add** `writeToFile` to the **jeach-pqueue** library is as fo
 
     q.add(writeToFile, fd, buf, function(stack, data) {
        // This gets called async, with 
-       // 'stack' for this promise queue
+       // 'stack' of this promise queue
        // 'data' containing a value on success
-       // If there are **any** errors, the **catch** handlers would be 
-       // called instead of passing through here.
+       // If there are **any** errors, the **catch** handlers would be called instead
     });
 
 There is a small advantage to the **jeach-pqueue** library. You are not limited to a *standard* callback of `error` and `data` (two parameters). If the async function you are calling only returns `data` (a single parameter), the library will automatically detect this and still provide the `stack` and `data` as shown above. Additionally, if the async function you are calling returns more parameters than the *standard* `error` and `data` (ie: `cb(err, data1, data2, data3, ...)`), your **jeach-pqueue** callback could look like the following:
@@ -120,10 +119,10 @@ There is a small advantage to the **jeach-pqueue** library. You are not limited 
        // Use all the 'data' params, they will be available to you
     });
 
-This is because the libaray automatically detects that there are additional parameters and they are provided on the call stack as well. If you look at the **Tmp** package on **NPM JS** page, you will see that the following function falls under this scenario:
+This is because the libaray automatically detects that there are additional parameters and they are provided on the call stack as well. If you look at the [Tmp package](https://www.npmjs.com/package/tmp) on the **NPM JS** page, you will see that the following function falls under this scenario:
 
     tmp.file(config, function _tempFileCreated(err, path, fd) {
-       // Temp file callback with 4 parameters (3 after the 'err' param)
+       // Temp file callback with 3 parameters (2 after the 'err' param)
     });
 
 With the **jeach-pqueue** library, there is no problem handling this, with this real-world example:
