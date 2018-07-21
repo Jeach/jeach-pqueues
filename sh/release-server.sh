@@ -40,6 +40,8 @@ echo " >> Next version     : $NEX_VER"
 #echo " >> Released package : $PACK"
 #mv $PACK ../$REPO/$PACK
 
+sed -i -e "s/VERSION *= *.*$/VERSION = '${NEX_VER:1}';/g" $NAME.js
+
 git add -f ../releases/$PACK
 git add *
 git commit -m "Releasing $NAME $NEX_VER" &> /dev/null
