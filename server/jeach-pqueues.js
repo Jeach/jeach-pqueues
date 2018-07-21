@@ -31,7 +31,7 @@
 */
 
 
-const VERSION = '0.1.28';
+const VERSION = '0.1.25';
 
 const QUEUE_STATE = {
   PENDING: 0,

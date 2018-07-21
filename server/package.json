@@ -1,6 +1,6 @@
 {
   "name": "jeach-pqueues",
-  "version": "0.1.28",
+  "version": "0.1.25",
   "description": "Jeach Promise Queues for Node.js",
   "main": "jeach-pqueues.js",
   "scripts": {
@@ -11,6 +11,7 @@
     "url": "git+https://github.com/Jeach/jeach-pqueues.git"
   },
   "keywords": [
+    "promises",
     "jeach",
     "jeach-promises",
     "jeach-queues",
