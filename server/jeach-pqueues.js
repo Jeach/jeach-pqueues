@@ -142,16 +142,20 @@ PQueue.prototype.execDeferred = function(queue, i) {
       setTimeout(queue.execCaught, TIMEOUT_DELAY, queue, error, 0);
     } else {
       try {
-        var args = [ queue.stack, data ];
-        
-        // Support additional params!
-        // Example: package 'Tmp' --> 'tmp.file([params], function(err, path, fd, cleanupCallback)'
-        if (arguments.length > 2) {
-           log(3, " > Additional params: " + (arguments.length - 2));
-           for (var x=2; x<arguments.length; x++) {
-              log(3, " > Param " + (x + 1) + ": " + arguments[x]);
-              args.push(arguments[x]);
-           }   
+        var args = [ queue.stack ];
+
+        log(3, " > Received " + (arguments.length) + " parameter" + (arguments.length > 1 ? "s" : ""));
+
+        if (arguments.length === 1) {   // Support only one argument (no 'error')
+          args.push(arguments[0]);
+        } else
+        if (arguments.length === 2) {   // Support the conventional "error-first" type of callback
+          args.push(arguments[1]);
+        } else 
+        if (arguments.length > 2) {     // Support all additional params after the first two!
+          for (var x=2; x<arguments.length; x++) {
+            args.push(arguments[x]);
+          }   
         }
         
         log(3, " > Now invoking callback w/ " + args.length + " arg" + (args.length > 1 ? "s" : "")  + ", values: " + JSON.stringify(args));
