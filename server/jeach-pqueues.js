@@ -39,8 +39,10 @@ const QUEUE_STATE = {
   FINISHED: 9
 };
 
+const TIMEOUT_DELAY = 1;  // milliseconds
+
 var queues = [];
-var logLevel = 0; // 0=none, 1=info, 2=some, 3=full
+var logLevel = 0;  // 0=none, 1=info, 2=some, 3=full
 
 //----------------------------------------------------------------------------------------
 
@@ -103,8 +105,7 @@ PQueue.prototype.exec = function() {
   
   this.state = QUEUE_STATE.STARTED;
 
-  //this.execDeferred(0);
-  setTimeout(this.execDeferred, 1, this, 0);
+  setTimeout(this.execDeferred, TIMEOUT_DELAY, this, 0);
 }
 
 PQueue.prototype.execDeferred = function(queue, i) {
@@ -112,7 +113,7 @@ PQueue.prototype.execDeferred = function(queue, i) {
 
   if (i >= queue.deferred.length) {
     log(1, " > Completed all deferred, now invoking finals!");
-    setTimeout(queue.execFinals, 1, queue, 0);
+    setTimeout(queue.execFinals, TIMEOUT_DELAY, queue, 0);
     return;
   }
 
@@ -138,7 +139,7 @@ PQueue.prototype.execDeferred = function(queue, i) {
 
     if (error) {
       log(1, " > Received error, deferring to caught chain!");
-      setTimeout(queue.execCaught, 1, queue, error, 0);
+      setTimeout(queue.execCaught, TIMEOUT_DELAY, queue, error, 0);
     } else {
       try {
         var args = [ queue.stack, data ];
@@ -156,10 +157,10 @@ PQueue.prototype.execDeferred = function(queue, i) {
         log(3, " > Now invoking callback w/ " + args.length + " arg" + (args.length > 1 ? "s" : "")  + ", values: " + JSON.stringify(args));
         cb.apply(this, args);
         log(3, " > " + queue);
-        setTimeout(queue.execDeferred, 1, queue, ++i); // Now chain...
+        setTimeout(queue.execDeferred, TIMEOUT_DELAY, queue, ++i); // Now chain...
       } catch (error) {
         log(1, " > Received error while calling PQueue.add(..) callback, deferring to caught chain!");
-        setTimeout(queue.execCaught, 1, queue, error, 0);
+        setTimeout(queue.execCaught, TIMEOUT_DELAY, queue, error, 0);
       }
     }
   }
@@ -170,7 +171,7 @@ PQueue.prototype.execDeferred = function(queue, i) {
     fn.apply(this, args);
   } catch (e) {
     log(2, " > ERROR: " + e);
-    setTimeout(queue.execCaught, 1, queue, e, 0);
+    setTimeout(queue.execCaught, TIMEOUT_DELAY, queue, e, 0);
   }
 }
 
@@ -179,7 +180,7 @@ PQueue.prototype.execCaught = function(queue, e, i) {
 
   if (i >= queue.caught.length) {
     log(1, " > Completed all caught, now invoking finals!");
-    setTimeout(queue.execFinals, 1, queue, 0);
+    setTimeout(queue.execFinals, TIMEOUT_DELAY, queue, 0);
     return;
   }
 
@@ -194,7 +195,7 @@ PQueue.prototype.execCaught = function(queue, e, i) {
     args.push(e);
     log(3, " > Invoking deffered w/ " + args.length + " arg" + (args.length > 1 ? "s" : "")  + ", values: " + JSON.stringify(args));
     cb.apply(this, args);
-    setTimeout(queue.execCaught, 1, queue, e, ++i); // Now chain...
+    setTimeout(queue.execCaught, TIMEOUT_DELAY, queue, e, ++i); // Now chain...
   } catch (e) {
     log(1, " > ERROR: " + e);
   }
@@ -218,7 +219,7 @@ PQueue.prototype.execFinals = function(queue, i) {
     args.push(queue.stack);
     log(3, " > Invoking deffered w/ " + args.length + " arg" + (args.length > 1 ? "s" : "")  + ", values: " + JSON.stringify(args));
     cb.apply(this, args);
-    setTimeout(queue.execFinals, 1, queue, ++i); // Now chain...
+    setTimeout(queue.execFinals, TIMEOUT_DELAY, queue, ++i); // Now chain...
   } catch (e) {
     log(2, " > ERROR: " + e);
   }
