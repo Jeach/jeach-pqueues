@@ -6,7 +6,7 @@ I'm relatively new to the use of Promises. My initial introduction to them wern'
 
 This work was a result of some experiments and a few ideas thrown together over the span of a few hours. With the soul purpose of being able to continue to move forward with an initial project. In the end, I found it so simple and easy to use that I figured I should let others have access to it. Although, it should be considered (at this time anyway), unsafe for any production environment.
 
-### Point in Case
+## Point in Case
 
 As mentioned above, I found the literature of various Promise libraries to be lacking (to be nice). If you consider the following **simple** synchrnous Mongoose code:
 
@@ -193,3 +193,15 @@ Here is a real-world example of how I use it in a `POST /account` API:
     q.exec();
 
 The above outlines how the **jeach-pqueue** library can be used for a single *`POST /account`* web service which allow to create a new user account in a web application.
+
+## Efficiency and Optimizations
+
+If you have taken some time to look at the code, you'll probably have noticed that this whole framework is based on `setTimeout(...)`. Yep, that's the first idea that popped in my head when I started coding it. But like I said before, I just wanted to keep moving forward with my projects. There may be a few performance issues with using `setTimeout(...)`:
+
+1. Thorttling - Even if we use it with the shortest possible delay of 1 millisecond, such as `setTimeout(this.execDeferred, 1, this, 0);`, from what I have read, each JavaScript engine may *throttle* or *clamp* the minimum timeout.
+You may want to read [Reasons for delays longer than specified](https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/setTimeout#Reasons_for_delays_longer_than_specified) for more on this. There is also information in the [HTML5 specification](https://html.spec.whatwg.org/multipage/timers-and-user-prompts.html#timers). Google also has a nice article on [Chrome clamping](https://groups.google.com/a/chromium.org/forum/#!msg/blink-dev/Hn3GxRLXmR0/XP9xcY_gBPQJ). And finally, there is also a nice article [here](https://dbaron.org/log/20100309-faster-timeouts).
+2. Late timeouts - In addition to "throttling" and "clamping", the timeout can also fire later when the page (or the OS/browser itself) is busy with other tasks. One important case to note is that the function or code snippet cannot be executed until the thread that called setTimeout() has terminated. This is because a call to `setTimeout` will be placed on a queue and scheduled to run at the next opportunity; not immediately.
+
+For me, as of now, it hasn't really been an issue. In most cases, my deferred calls are I/O based for which they themselves have huge delays and are dependent on the Kernel, OS, network or hardware. Not that this is an excuse, I'd love to solve these performance issues and have the calls fully optimized.
+
+Although I'm far from an expert in fine-tuning this type of performance problem, I believe there are a few options available. I have not tackled this yet but I do intend to do so when I get a chance. Until then, please be aware.
