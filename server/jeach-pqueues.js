@@ -31,7 +31,7 @@
 */
 
 
-const VERSION = '0.1.29';
+const VERSION = '0.1.30';
 
 const QUEUE_STATE = {
   PENDING: 0,
@@ -153,7 +153,7 @@ PQueue.prototype.execDeferred = function(queue, i) {
           args.push(arguments[1]);
         } else 
         if (arguments.length > 2) {     // Support all additional params after the first two!
-          for (var x=2; x<arguments.length; x++) {
+          for (var x=1; x<arguments.length; x++) {
             args.push(arguments[x]);
           }   
         }
@@ -325,7 +325,7 @@ function debug(level) {
 }
 
 function toString() {
-  var msg = "[jeach-pqueues] version: " + this.version() + ", pqueues: " + queues.length;
+  var msg = "[jeach-pqueues] version: " + this.version() + ", queues: " + queues.length;
   
   if (arguments.length > 0) {
     for (var i=0; i<queues.length; i++) {
