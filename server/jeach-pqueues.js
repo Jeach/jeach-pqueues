@@ -99,13 +99,37 @@ PQueue.prototype.toString = function() {
            ", level: " + logLevel;
 }
 
-PQueue.prototype.exec = function() {
+PQueue.prototype.exec = async function() {
   log(1, "Starting execution:");
   log(2, " > " + this.toString());
   
   this.state = QUEUE_STATE.STARTED;
 
-  setTimeout(this.execDeferred, TIMEOUT_DELAY, this, 0);
+  for (var i=0; i<this.deferred.length; i++) {
+    var fn = this.deferred[i].fn;
+    var cb = this.deferred[i].cb;
+    var args = [];
+    
+    // construct our args array
+    for (var a=0; a<this.deferred[i].args.length; a++) {
+      if (this.deferred[i].args[a] instanceof PStackRef) {
+        args.push(this.deferred[i].args[a].resolve());
+      } else {
+        args.push(this.deferred[i].args[a]);
+      }
+    }
+
+    try {
+      log(2, " > Invoking deferred " + i + ": w/" + args.length + " arg" + (args.length > 1 ? "s" : "")  + ", values: " + JSON.stringify(args));
+      var data = await fn.apply(this, args);
+      log(2, " > Received data: " + JSON.stringify(data));
+      log(2, " > Invoking deferred callback");
+      await cb.apply(this, [ this.stack, data ]);
+    } catch (e) {
+      log(2, " > ERROR: " + e);
+      //setTimeout(queue.execCaught, TIMEOUT_DELAY, queue, e, 0);
+    }
+  }
 }
 
 PQueue.prototype.execDeferred = function(queue, i) {
